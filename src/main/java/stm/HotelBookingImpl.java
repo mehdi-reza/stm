@@ -42,7 +42,6 @@ public class HotelBookingImpl extends LockManager implements HotelBooking {
 		try {
 			os.packBoolean(this.booked);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return super.save_state(os, ot);
@@ -51,13 +50,13 @@ public class HotelBookingImpl extends LockManager implements HotelBooking {
 	@Override
 	public synchronized boolean restore_state(InputObjectState os, int ot) {
 		logger.info("Restore state");
+		super.restore_state(os, ot);
 		try {
 			this.booked = os.unpackBoolean();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return super.restore_state(os, ot);
+		return true;
 	}
 
 }
