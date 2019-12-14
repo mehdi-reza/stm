@@ -20,19 +20,19 @@ public class TxTest {
 
 	private void test1() {
 		
-		//Container<Service> c = new Container<>(TYPE.PERSISTENT, MODEL.EXCLUSIVE);
+		Container<Service> c = new Container<>(TYPE.PERSISTENT, MODEL.EXCLUSIVE);
 
-		FlightBookingImpl flight = new FlightBookingImpl();
-		HotelBookingImpl hotel = new HotelBookingImpl();
+		FlightBooking flight = (FlightBooking) c.create(new FlightBookingImpl());
+		HotelBooking hotel = (HotelBooking) c.create(new HotelBookingImpl());
 
 		AtomicAction a = new AtomicAction();
 		
 		try {
 			a.begin();
-				flight.setlock(new Lock(LockMode.WRITE));
+				//flight.setlock(new Lock(LockMode.WRITE));
 				flight.bookFlight();
 				
-				hotel.setlock(new Lock(LockMode.WRITE));
+				//hotel.setlock(new Lock(LockMode.WRITE));
 				hotel.bookHotel(2);
 			a.commit();
 		} catch (Exception e) {

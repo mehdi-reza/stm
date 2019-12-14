@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.jboss.logging.Logger;
 import org.jboss.stm.annotations.NestedTopLevel;
+import org.jboss.stm.annotations.ReadLock;
 import org.jboss.stm.annotations.State;
 import org.jboss.stm.annotations.Transactional;
 import org.jboss.stm.annotations.WriteLock;
@@ -14,7 +15,7 @@ import com.arjuna.ats.txoj.LockManager;
 
 @Transactional
 @NestedTopLevel
-public class FlightBookingImpl extends LockManager implements FlightBooking {
+public class FlightBookingImpl implements FlightBooking {
 
 	Logger logger = Logger.getLogger(FlightBooking.class);
 
@@ -28,11 +29,12 @@ public class FlightBookingImpl extends LockManager implements FlightBooking {
 	}
 	
 	@Override
+	@ReadLock
 	public boolean isBooked() {
 		return this.booked;
 	}
 	
-	@Override
+	/*@Override
 	public synchronized boolean save_state(OutputObjectState os, int ot) {
 		logger.info("Save state");
 		try {
@@ -53,6 +55,6 @@ public class FlightBookingImpl extends LockManager implements FlightBooking {
 			e.printStackTrace();
 		}
 		return super.restore_state(os, ot);
-	}
+	}*/
 
 }

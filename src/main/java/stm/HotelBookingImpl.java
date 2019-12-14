@@ -15,7 +15,7 @@ import com.arjuna.ats.txoj.LockManager;
 
 @Transactional
 @NestedTopLevel
-public class HotelBookingImpl extends LockManager implements HotelBooking {
+public class HotelBookingImpl implements HotelBooking {
 
 	Logger logger = Logger.getLogger(HotelBooking.class);
 
@@ -31,12 +31,13 @@ public class HotelBookingImpl extends LockManager implements HotelBooking {
 	}
 
 	@Override
+	@ReadLock
 	public boolean isBooked() {
 		return this.booked;
 	}
 	
 
-	@Override
+	/*@Override
 	public synchronized boolean save_state(OutputObjectState os, int ot) {
 		logger.info("Save state");
 		try {
@@ -58,6 +59,6 @@ public class HotelBookingImpl extends LockManager implements HotelBooking {
 			e.printStackTrace();
 		}
 		return super.restore_state(os, ot);
-	}
+	}*/
 
 }
