@@ -1,0 +1,7 @@
+# stm
+Narayana STM Example
+
+### Run
+----
+mvn exec:java -Dexec.mainClass=stm.TxTest
+----
