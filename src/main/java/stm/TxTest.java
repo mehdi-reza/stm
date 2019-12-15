@@ -1,14 +1,11 @@
 package stm;
 
 import org.jboss.stm.Container;
-import org.jboss.stm.Container.MODEL;
 import org.jboss.stm.Container.TYPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.arjuna.ats.arjuna.AtomicAction;
-import com.arjuna.ats.txoj.Lock;
-import com.arjuna.ats.txoj.LockMode;
 
 public class TxTest {
 
@@ -20,27 +17,27 @@ public class TxTest {
 
 	private void test1() {
 		
-		Container<Service> c = new Container<>(TYPE.PERSISTENT, MODEL.EXCLUSIVE);
-
+		Container<Service> c = new Container<>(TYPE.PERSISTENT);
+		
 		FlightBooking flight = (FlightBooking) c.create(new FlightBookingImpl());
 		HotelBooking hotel = (HotelBooking) c.create(new HotelBookingImpl());
 
-		AtomicAction a = new AtomicAction();
+		AtomicAction aa = new AtomicAction();
 		
 		try {
-			a.begin();
-				//flight.setlock(new Lock(LockMode.WRITE));
+			aa.begin();
 				flight.bookFlight();
-				
-				//hotel.setlock(new Lock(LockMode.WRITE));
 				hotel.bookHotel(2);
-			a.commit();
+			
+			logger.info("Committing transaction");
+			aa.commit();
 		} catch (Exception e) {
 			logger.info("Aborting transaction");
-			a.abort();
+			aa.abort();
 		}
 
-		logger.info("Is flight booked: "+flight.isBooked());
-		logger.info("Is hotel booked: "+hotel.isBooked());
+		logger.info("Is flight booked: "+flight.getBooked());
+		logger.info("Is hotel booked: "+hotel.getBooked());
+		
 	}
 }
